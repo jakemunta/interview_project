@@ -1,4 +1,5 @@
 class Population < ApplicationRecord
+  MAX_YEAR = 2500
 
   def self.min_year
     @min_year ||= Population.minimum("year").year
@@ -8,16 +9,25 @@ class Population < ApplicationRecord
     @max_year ||= Population.maximum("year").year
   end
 
+  def self.max_year_population
+    @max_year_population ||= Population.find_by_year(Date.new(max_year)).population
+  end
+
   def self.get(year)
     year = year.to_i
 
     if year < min_year
       return 0
     elsif year >= max_year
-      return Population.find_by_year(Date.new(max_year)).population
+      return future_population_with_expected_growth(year)
     else
       return linear_population(year)
     end
+  end
+
+  def self.future_population_with_expected_growth(year, growth_rate=9)
+    year = MAX_YEAR if year > MAX_YEAR
+    max_year_population + (year - max_year)*growth_rate/100
   end
 
   def self.greater_year_population(year)
