@@ -1,0 +1,16 @@
+<div>
+<table>
+  <tr>
+    <th>Year</th>
+    <th>Population in result</th>
+    <th>Log time</th>
+  </tr>
+  <% @search_histories.each do |log| %>
+    <tr>
+      <td><%= log.year %></td>
+      <td><%= log.result %></td>
+      <td><%= log.created_at %></td>
+    </tr>
+  <% end %>
+</table>
+</div>

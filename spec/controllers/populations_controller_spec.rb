@@ -21,6 +21,7 @@ RSpec.describe PopulationsController, type: :controller do
       get :show, params: { year: year }
       expect(response.content_type).to eq "text/html"
       expect(response.body).to match /Population: #{Population.get(year)}/im
+      expect(SearchHistory.last.year).to eq year
     end
   end
 end
