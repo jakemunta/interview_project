@@ -8,8 +8,8 @@ RSpec.describe Population, type: :model do
   end
 
   it "should accept a year we don't know and return the previous known population" do
-    expect(Population.get(1902)).to eq(76212168)
-    expect(Population.get(1908)).to eq(76212168)
+    expect(Population.get(1902)).to eq(79415433)
+    expect(Population.get(1908)).to eq(89025230)
   end
 
   it "should accept a year that is before earliest known and return zero" do

@@ -1,7 +1,7 @@
 class Population < ApplicationRecord
 
   def self.min_year
-    Population.all.map(&:year).min.year
+    @min_year ||= Population.minimum("year").year
   end
 
   def self.max_year
@@ -16,18 +16,34 @@ class Population < ApplicationRecord
     elsif year >= max_year
       return Population.find_by_year(Date.new(max_year)).population
     else
-
-
-      pop = nil
-      until pop
-        pop = Population.find_by_year(Date.new(year))
-        year = year - 1
-      end
-
-      return pop.population if pop
-
-      nil
+      return linear_population(year)
     end
+  end
+
+  def self.greater_year_population(year)
+    @greater_year_population ||= Population.where("year > ?", Date.new(year)).first
+  end
+
+  def self.smaller_year_population(year)
+    @smaller_year_population ||= Population.where("year <= ?", Date.new(year)).first
+  end
+
+  def self.linear_population(year)
+    year_percent = calculate_year_percent(year)
+    calculate_popultion_percent(year, year_percent)
+  end
+
+  def self.calculate_year_percent(year)
+    greater_year = greater_year_population(year).year.year
+    smaller_year = smaller_year_population(year).year.year
+    ((year-smaller_year) * 100)/(greater_year - smaller_year)
+  end
+
+  def self.calculate_popultion_percent(year, year_percent)
+    greater_population = greater_year_population(year).population
+    smaller_population = smaller_year_population(year).population
+    linear_difference  = (greater_population - smaller_population) * year_percent/100
+    smaller_population + linear_difference
   end
 
 end
