@@ -1,0 +1,33 @@
+<div>
+<table>
+  <tr>
+    <th>Year</th>
+    <th>Population in result</th>
+    <th>Log time</th>
+    <th>Exact Match</th>
+  </tr>
+  <% @search_histories.each do |log| %>
+    <tr>
+      <td><%= log.year %></td>
+      <td><%= log.result %></td>
+      <td><%= log.created_at %></td>
+      <td><%= log.exact_match ? "exact" : "caculated" %></td>
+    </tr>
+  <% end %>
+</table>
+</div>
+
+<div>
+<table>
+  <tr>
+    <th>Year</th>
+    <th>No of searches</th>
+  </tr>
+  <% @search_requests.each do |request| %>
+    <tr>
+      <td><%= request.year.year %></td>
+      <td><%= request.search_count %></td>
+    </tr>
+  <% end %>
+</table>
+</div>
