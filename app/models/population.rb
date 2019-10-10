@@ -1,4 +1,7 @@
 class Population < ApplicationRecord
+
+  has_many :search_histories
+
   MAX_YEAR = 2500
 
   def self.min_year
@@ -56,8 +59,12 @@ class Population < ApplicationRecord
     smaller_population + linear_difference
   end
 
-  def self.exact_match?(year)
-    true if Population.where(year: Date.new(year.to_i)).first
+  def self.by_year(year)
+    Population.where(year: Date.new(year.to_i)).first
+  end
+
+  def self.search_count_by_year()
+    joins(:search_histories).select("populations.year, count(search_histories.id) as search_count").group("populations.year")
   end
 
 end

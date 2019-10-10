@@ -24,4 +24,25 @@ RSpec.describe Population, type: :model do
     expect(Population.get(2500)).to eq(248709918)
   end
 
+  it "should return all the exact matches year with the total count of searches" do
+    population = Population.find_by_year(Date.new(1990))
+    SearchHistory.create(year: population.year.year, result: population.population, population_id: population.id)
+    search_count = Population.search_count_by_year.first
+    expect(search_count.year.year).to eq(1990)
+    expect(search_count.search_count).to eq(1)
+
+    SearchHistory.create(year: population.year.year, result: population.population, population_id: population.id)
+    search_count = Population.search_count_by_year.first
+    expect(search_count.year.year).to eq(1990)
+    expect(search_count.search_count).to eq(2)
+
+  end
+
+  it "should not return if match is not exact" do
+    population = Population.find_by_year(Date.new(1985))
+    SearchHistory.create(year: 1985, result: 972313123, population_id: nil)
+    search_count = Population.search_count_by_year.first
+    expect(search_count).to eq(nil)
+  end
+
 end

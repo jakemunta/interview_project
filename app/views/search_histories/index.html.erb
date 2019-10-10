@@ -16,3 +16,18 @@
   <% end %>
 </table>
 </div>
+
+<div>
+<table>
+  <tr>
+    <th>Year</th>
+    <th>No of searches</th>
+  </tr>
+  <% @search_requests.each do |request| %>
+    <tr>
+      <td><%= request.year.year %></td>
+      <td><%= request.search_count %></td>
+    </tr>
+  <% end %>
+</table>
+</div>

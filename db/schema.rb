@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_09_184151) do
+ActiveRecord::Schema.define(version: 2019_10_10_142423) do
 
   create_table "populations", force: :cascade do |t|
     t.date "year"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 2019_10_09_184151) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "exact_match"
+    t.integer "population_id"
+    t.index ["population_id"], name: "index_search_histories_on_population_id"
   end
 
 end
