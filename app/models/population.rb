@@ -35,7 +35,7 @@ class Population < ApplicationRecord
   end
 
   def self.smaller_year_population(year)
-    @smaller_year_population ||= Population.where("year <= ?", Date.new(year)).first
+    @smaller_year_population ||= Population.where("year <= ?", Date.new(year)).order('year desc').first
   end
 
   def self.linear_population(year)
@@ -54,6 +54,10 @@ class Population < ApplicationRecord
     smaller_population = smaller_year_population(year).population
     linear_difference  = (greater_population - smaller_population) * year_percent/100
     smaller_population + linear_difference
+  end
+
+  def self.exact_match?(year)
+    true if Population.where(year: Date.new(year.to_i)).first
   end
 
 end
